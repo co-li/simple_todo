@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:simple_todo/main.dart';
+import 'package:simple_todo/models/todoitem.dart';
 
 void main() {
   group('ToDoItem Tests', (){

@@ -130,7 +130,6 @@ void main() {
       await tester.pumpWidget(MyApp());
 
       final titleFinder = find.text('To Do List');
-      final originalList = ["item 1", "item 2"];
 
       // Tap the '+' icon and trigger a frame.
       await tester.tap(find.byIcon(Icons.add));
