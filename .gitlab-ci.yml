@@ -1,0 +1,36 @@
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  script:
+    - flutter test --coverage
+    - bash <(curl -s https://codecov.io/bash)
+  tags:
+    - flutter
+
+build_android:
+  stage: build
+  before_script:
+    - flutter packages get
+    - flutter clean
+  script:
+    - flutter build apk
+  artifacts:
+    paths:
+      - build/app/outputs/flutter-apk/app-release.apk
+  tags:
+    - flutter
+    - android
+
+build_ios:
+  stage: build
+  before_script:
+    - flutter packages get
+    - flutter clean
+  script:
+    - flutter build ios --no-codesign
+  tags:
+    - flutter
+    - ios
