@@ -49,7 +49,7 @@ class ToDo extends StatefulWidget {
 class _ToDoState extends State<ToDo> {
   final _toDoList = <ToDoItem>[];
 
-  Widget _buildToDoList(BuildContext context) {
+  Widget _buildToDoList() {
     final toDoTiles = _toDoList.map(
       (ToDoItem toDoItem) {
         return CheckboxListTile(
@@ -120,7 +120,7 @@ class _ToDoState extends State<ToDo> {
           IconButton(onPressed: _editToDo, icon: Icon(Icons.edit)),
         ],
       ),
-      body: _buildToDoList(context),
+      body: _buildToDoList(),
       floatingActionButton: FloatingActionButton(
         onPressed: _addToDo,
         tooltip: 'Add Task',
