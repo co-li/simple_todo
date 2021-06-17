@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_todo/models/todoitem.dart';
 import 'package:simple_todo/models/todolist.dart';
 
 class ToDoList extends StatelessWidget {
+
+  Widget _buildToDoList(List<ToDoItem> toDoList) {
+    return ListView.separated(
+      itemCount: toDoList.length,
+      itemBuilder: (BuildContext context, int index) {
+        var toDoItem = toDoList[index];
+        return CheckboxListTile(
+          title: Text(toDoItem.description),
+          value: toDoItem.finished,
+          controlAffinity: ListTileControlAffinity.leading,
+          onChanged: (bool? value) {
+            toDoItem.finished = !toDoItem.finished;
+            var toDoList = context.read<ToDoListModel>();
+            toDoList.updateItem(index, toDoItem);
+          },
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var toDoList = context.watch<ToDoListModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -18,38 +39,12 @@ class ToDoList extends StatelessWidget {
               icon: Icon(Icons.edit)),
         ],
       ),
-      body: ListView.separated(
-        itemCount: toDoList.length(),
-        itemBuilder: (BuildContext context, int index) {
-          return _ToDoItem(index);
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-      ),
+      body: _buildToDoList(context.watch<ToDoListModel>().toDoList),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pushNamed(context, '/add'),
         tooltip: "Add To Do",
         child: Icon(Icons.add),
       ),
-    );
-  }
-}
-
-class _ToDoItem extends StatelessWidget {
-  final int index;
-
-  const _ToDoItem(this.index, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var toDoItem = context.watch<ToDoListModel>().getByIndex(index);
-
-    return ListTile(
-      title: Text(toDoItem.description),
-      // value: toDoItem.finished,
-      // controlAffinity: ListTileControlAffinity.leading,
-      // onChanged: (bool? value) {
-      //   toDoItem.toggle();
-      // },
     );
   }
 }
